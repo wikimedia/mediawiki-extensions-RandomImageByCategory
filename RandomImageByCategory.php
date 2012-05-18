@@ -110,7 +110,7 @@ function getRandomImage( $input, $args, $parser ) {
 		$image_title = Title::makeTitle( NS_FILE, $random_image );
 		$render_image = wfFindFile( $random_image );
 
-		$thumb_image = $render_image->getThumbnail( $width );
+		$thumb_image = $render_image->transform( array( 'width' => $width ) );
 		$thumbnail = "<a href=\"{$image_title->escapeFullURL()}\">{$thumb_image->toHtml()}</a>";
 	}
 
