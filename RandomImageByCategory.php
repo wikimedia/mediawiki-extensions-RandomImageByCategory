@@ -111,7 +111,7 @@ function getRandomImage( $input, $args, $parser ) {
 		$render_image = wfFindFile( $random_image );
 
 		$thumb_image = $render_image->transform( array( 'width' => $width ) );
-		$thumbnail = "<a href=\"{$image_title->escapeFullURL()}\">{$thumb_image->toHtml()}</a>";
+		$thumbnail = "<a href=\"" . htmlspecialchars( $image_title->getFullURL() ) . "\">{$thumb_image->toHtml()}</a>";
 	}
 
 	wfProfileOut( __METHOD__ );
