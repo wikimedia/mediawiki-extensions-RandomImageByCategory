@@ -9,19 +9,15 @@
  * @author Aaron Wright <aaron.wright@gmail.com>
  * @author David Pean <david.pean@gmail.com>
  * @author Jack Phoenix <jack@countervandalism.net>
- * @version 1.0
- * @link http://www.mediawiki.org/wiki/Extension:RandomImageByCategory Documentation
+ * @version 1.1
+ * @link https://www.mediawiki.org/wiki/Extension:RandomImageByCategory Documentation
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License 2.0 or later
  */
-
-if ( !defined( 'MEDIAWIKI' ) ) {
-	die( "Not a valid entry point.\n" );
-}
 
 // Extension credits that will show up on Special:Version
 $wgExtensionCredits['parserhook'][] = array(
 	'name' => 'RandomImageByCategory',
-	'version' => '1.0',
+	'version' => '1.1',
 	'author' => array( 'Aaron Wright', 'David Pean', 'Jack Phoenix' ),
 	'description' => 'Displays a random image from a given category',
 	'url' => 'https://www.mediawiki.org/wiki/Extension:RandomImageByCategory',
@@ -36,8 +32,6 @@ function wfRandomImageByCategory( &$parser ) {
 
 function getRandomImage( $input, $args, $parser ) {
 	global $wgMemc;
-
-	wfProfileIn( __METHOD__ );
 
 	$parser->disableCache();
 
@@ -102,7 +96,7 @@ function getRandomImage( $input, $args, $parser ) {
 
 	$random_image = '';
 	$thumbnail = '';
-	if( count( $image_list ) > 1 ) {
+	if( count( $image_list ) > 0 ) {
 		$random_image = $image_list[ array_rand( $image_list, 1 ) ];
 	}
 
@@ -113,8 +107,6 @@ function getRandomImage( $input, $args, $parser ) {
 		$thumb_image = $render_image->transform( array( 'width' => $width ) );
 		$thumbnail = "<a href=\"" . htmlspecialchars( $image_title->getFullURL() ) . "\">{$thumb_image->toHtml()}</a>";
 	}
-
-	wfProfileOut( __METHOD__ );
 
 	return $thumbnail;
 }
