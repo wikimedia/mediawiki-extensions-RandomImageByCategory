@@ -1,0 +1,22 @@
+{
+	"name": "RandomImageByCategory",
+	"version": "1.2",
+	"author": [
+		"Aaron Wright",
+		"David Pean",
+		"Jack Phoenix"
+	],
+	"license-name": "GPL-2.0+",
+	"url": "https://www.mediawiki.org/wiki/Extension:RandomImageByCategory",
+	"description": "Displays a random image from a given category",
+	"type": "parserhook",
+	"AutoloadClasses": {
+		"RandomImageByCategory": "RandomImageByCategory.class.php"
+	},
+	"Hooks": {
+		"ParserFirstCallInit": [
+			"RandomImageByCategory::registerTag"
+		]
+	},
+	"manifest_version": 1
+}
