@@ -8,10 +8,15 @@
 	],
 	"license-name": "GPL-2.0+",
 	"url": "https://www.mediawiki.org/wiki/Extension:RandomImageByCategory",
-	"description": "Displays a random image from a given category",
+	"descriptionmsg": "randomimagebycategory-desc",
 	"type": "parserhook",
 	"AutoloadClasses": {
 		"RandomImageByCategory": "RandomImageByCategory.class.php"
+	},
+	"MessagesDirs": {
+		"RandomImageByCategory": [
+			"i18n"
+		]
 	},
 	"Hooks": {
 		"ParserFirstCallInit": [
