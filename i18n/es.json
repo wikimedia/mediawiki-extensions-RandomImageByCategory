@@ -1,8 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
-			"Bengoa"
+			"Bengoa",
+			"Fitoschido"
 		]
 	},
-	"randomimagebycategory-desc": "Muestra una imagen aleatoria desde la categoría dada"
+	"randomimagebycategory-desc": "Muestra una imagen al azar de una categoría concreta"
 }
