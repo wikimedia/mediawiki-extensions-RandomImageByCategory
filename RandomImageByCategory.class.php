@@ -65,7 +65,7 @@ class RandomImageByCategory {
 				$params['LIMIT'] = $limit;
 			}
 
-			$dbr = wfGetDB( DB_SLAVE );
+			$dbr = wfGetDB( DB_REPLICA );
 			$res = $dbr->select(
 				array( 'page', 'categorylinks' ),
 				array( 'page_title' ),
