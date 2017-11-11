@@ -8,7 +8,7 @@
  * @ingroup Extensions
  * @author Aaron Wright <aaron.wright@gmail.com>
  * @author David Pean <david.pean@gmail.com>
- * @author Jack Phoenix <jack@countervandalism.net>
+ * @author Jack Phoenix
  * @link https://www.mediawiki.org/wiki/Extension:RandomImageByCategory Documentation
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License 2.0 or later
  */
