@@ -23,7 +23,7 @@ class RandomImageByCategory {
 	public static function getRandomImage( $input, $args, $parser ) {
 		global $wgMemc;
 
-		$parser->disableCache();
+		$parser->getOutput()->updateCacheExpiry( 0 );
 
 		$categories = ( isset( $args['categories'] ) ) ? trim( $args['categories'] ) : '';
 
