@@ -39,7 +39,7 @@ class RandomImageByCategory {
 			$width = 200;
 		}
 
-		$key = wfMemcKey( 'image', 'random', $limit, str_replace( ' ', '', $categories ) );
+		$key = $wgMemc->makeKey( 'image', 'random', $limit, str_replace( ' ', '', $categories ) );
 		$data = $wgMemc->get( $key );
 		$image_list = array();
 		if ( !$data ) {
