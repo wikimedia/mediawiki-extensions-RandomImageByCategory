@@ -10,13 +10,13 @@
  * @author David Pean <david.pean@gmail.com>
  * @author Jack Phoenix
  * @link https://www.mediawiki.org/wiki/Extension:RandomImageByCategory Documentation
- * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License 2.0 or later
+ * @license GPL-2.0-or-later
  */
 
 class RandomImageByCategory {
 
 	public static function registerTag( &$parser ) {
-		$parser->setHook( 'randomimagebycategory', array( __CLASS__, 'getRandomImage' ) );
+		$parser->setHook( 'randomimagebycategory', [ __CLASS__, 'getRandomImage' ] );
 		return true;
 	}
 
@@ -41,7 +41,7 @@ class RandomImageByCategory {
 
 		$key = $wgMemc->makeKey( 'image', 'random', $limit, str_replace( ' ', '', $categories ) );
 		$data = $wgMemc->get( $key );
-		$image_list = array();
+		$image_list = [];
 		if ( !$data ) {
 			wfDebug( "Getting random image list from DB\n" );
 			$ctg = $parser->replaceVariables( $categories );
@@ -49,7 +49,7 @@ class RandomImageByCategory {
 			$ctg = str_replace( "\,", '#comma#', $ctg );
 			$aCat = explode( ',', $ctg );
 
-			$category_match = array();
+			$category_match = [];
 			foreach ( $aCat as $sCat ) {
 				if ( $sCat != '' ) {
 					$category_match[] = Title::newFromText( trim( str_replace( '#comma#', ',', $sCat ) ) )->getDBkey();
@@ -67,14 +67,14 @@ class RandomImageByCategory {
 
 			$dbr = wfGetDB( DB_REPLICA );
 			$res = $dbr->select(
-				array( 'page', 'categorylinks' ),
-				array( 'page_title' ),
-				array( 'cl_to' => $category_match, 'page_namespace' => NS_FILE ),
+				[ 'page', 'categorylinks' ],
+				[ 'page_title' ],
+				[ 'cl_to' => $category_match, 'page_namespace' => NS_FILE ],
 				__METHOD__,
 				$params,
-				array( 'categorylinks' => array( 'INNER JOIN', 'cl_from=page_id' ) )
+				[ 'categorylinks' => [ 'INNER JOIN', 'cl_from=page_id' ] ]
 			);
-			$image_list = array();
+			$image_list = [];
 			foreach ( $res as $row ) {
 				$image_list[] = $row->page_title;
 			}
@@ -94,11 +94,10 @@ class RandomImageByCategory {
 			$image_title = Title::makeTitle( NS_FILE, $random_image );
 			$render_image = wfFindFile( $random_image );
 
-			$thumb_image = $render_image->transform( array( 'width' => $width ) );
+			$thumb_image = $render_image->transform( [ 'width' => $width ] );
 			$thumbnail = "<a href=\"" . htmlspecialchars( $image_title->getFullURL() ) . "\">{$thumb_image->toHtml()}</a>";
 		}
 
 		return $thumbnail;
 	}
-
 }

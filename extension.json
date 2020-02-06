@@ -11,7 +11,7 @@
 	"descriptionmsg": "randomimagebycategory-desc",
 	"type": "parserhook",
 	"AutoloadClasses": {
-		"RandomImageByCategory": "RandomImageByCategory.class.php"
+		"RandomImageByCategory": "RandomImageByCategory.php"
 	},
 	"MessagesDirs": {
 		"RandomImageByCategory": [
