@@ -13,6 +13,8 @@
  * @license GPL-2.0-or-later
  */
 
+use MediaWiki\MediaWikiServices;
+
 class RandomImageByCategory {
 
 	public static function registerTag( &$parser ) {
@@ -92,7 +94,12 @@ class RandomImageByCategory {
 
 		if ( $random_image ) {
 			$image_title = Title::makeTitle( NS_FILE, $random_image );
-			$render_image = wfFindFile( $random_image );
+			if ( method_exists( MediaWikiServices::class, 'getRepoGroup' ) ) {
+				// MediaWiki 1.34+
+				$render_image = MediaWikiServices::getInstance()->getRepoGroup()->findFile( $random_image );
+			} else {
+				$render_image = wfFindFile( $random_image );
+			}
 
 			$thumb_image = $render_image->transform( [ 'width' => $width ] );
 			$thumbnail = "<a href=\"" . htmlspecialchars( $image_title->getFullURL() ) . "\">{$thumb_image->toHtml()}</a>";
