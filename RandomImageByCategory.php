@@ -19,12 +19,9 @@ class RandomImageByCategory {
 
 	public static function registerTag( &$parser ) {
 		$parser->setHook( 'randomimagebycategory', [ __CLASS__, 'getRandomImage' ] );
-		return true;
 	}
 
 	public static function getRandomImage( $input, $args, $parser ) {
-		global $wgMemc;
-
 		$parser->getOutput()->updateCacheExpiry( 0 );
 
 		$categories = ( isset( $args['categories'] ) ) ? trim( $args['categories'] ) : '';
@@ -41,9 +38,12 @@ class RandomImageByCategory {
 			$width = 200;
 		}
 
-		$key = $wgMemc->makeKey( 'image', 'random', $limit, str_replace( ' ', '', $categories ) );
-		$data = $wgMemc->get( $key );
+		$services = MediaWikiServices::getInstance();
+		$cache = $services->getMainWANObjectCache();
+		$key = $cache->makeKey( 'image', 'random', $limit, str_replace( ' ', '', $categories ) );
+		$data = $cache->get( $key );
 		$image_list = [];
+
 		if ( !$data ) {
 			wfDebug( "Getting random image list from DB\n" );
 			$ctg = $parser->replaceVariables( $categories );
@@ -80,7 +80,7 @@ class RandomImageByCategory {
 			foreach ( $res as $row ) {
 				$image_list[] = $row->page_title;
 			}
-			$wgMemc->set( $key, $image_list, 60 * 15 );
+			$cache->set( $key, $image_list, 60 * 15 );
 		} else {
 			$image_list = $data;
 			wfDebug( "Cache hit for random image list\n" );
@@ -94,13 +94,7 @@ class RandomImageByCategory {
 
 		if ( $random_image ) {
 			$image_title = Title::makeTitle( NS_FILE, $random_image );
-			if ( method_exists( MediaWikiServices::class, 'getRepoGroup' ) ) {
-				// MediaWiki 1.34+
-				$render_image = MediaWikiServices::getInstance()->getRepoGroup()->findFile( $random_image );
-			} else {
-				$render_image = wfFindFile( $random_image );
-			}
-
+			$render_image = $services->getRepoGroup()->findFile( $random_image );
 			$thumb_image = $render_image->transform( [ 'width' => $width ] );
 			$thumbnail = "<a href=\"" . htmlspecialchars( $image_title->getFullURL() ) . "\">{$thumb_image->toHtml()}</a>";
 		}
