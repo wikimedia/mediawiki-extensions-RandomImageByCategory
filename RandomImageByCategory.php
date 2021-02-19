@@ -47,7 +47,7 @@ class RandomImageByCategory {
 		if ( !$data ) {
 			wfDebug( "Getting random image list from DB\n" );
 			$ctg = $parser->replaceVariables( $categories );
-			$ctg = $parser->mStripState->unstripBoth( $ctg );
+			$ctg = $parser->getStripState()->unstripBoth( $ctg );
 			$ctg = str_replace( "\,", '#comma#', $ctg );
 			$aCat = explode( ',', $ctg );
 
