@@ -1,4 +1,5 @@
 {
+	"name": "RandomImageByCategory",
 	"private": true,
 	"scripts": {
 		"test": "grunt test"
