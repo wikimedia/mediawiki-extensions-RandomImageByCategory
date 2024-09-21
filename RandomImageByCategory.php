@@ -67,7 +67,7 @@ class RandomImageByCategory {
 				$params['LIMIT'] = $limit;
 			}
 
-			$dbr = wfGetDB( DB_REPLICA );
+			$dbr = MediaWikiServices::getInstance()->getDBLoadBalancer()->getConnection( DB_REPLICA );
 			$res = $dbr->select(
 				[ 'page', 'categorylinks' ],
 				[ 'page_title' ],
