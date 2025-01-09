@@ -26,14 +26,14 @@ class RandomImageByCategory {
 
 		$categories = ( isset( $args['categories'] ) ) ? trim( $args['categories'] ) : '';
 
-		if ( isset( $args['limit'] ) && is_numeric( $args['limit'] ) ) {
-			$limit = $args['limit'];
+		if ( isset( $args['limit'] ) && ctype_digit( $args['limit'] ) ) {
+			$limit = (int)$args['limit'];
 		} else {
 			$limit = 10;
 		}
 
-		if ( isset( $args['width'] ) && is_numeric( $args['width'] ) ) {
-			$width = $args['width'];
+		if ( isset( $args['width'] ) && ctype_digit( $args['width'] ) ) {
+			$width = (int)$args['width'];
 		} else {
 			$width = 200;
 		}
@@ -54,7 +54,10 @@ class RandomImageByCategory {
 			$category_match = [];
 			foreach ( $aCat as $sCat ) {
 				if ( $sCat != '' ) {
-					$category_match[] = Title::newFromText( trim( str_replace( '#comma#', ',', $sCat ) ) )->getDBkey();
+					$categoryTitle = Title::newFromText( trim( str_replace( '#comma#', ',', $sCat ) ) );
+					if ( $categoryTitle ) {
+						$category_match[] = $categoryTitle->getDBkey();
+					}
 				}
 			}
 
