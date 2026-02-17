@@ -72,14 +72,30 @@ class RandomImageByCategory {
 			}
 
 			$dbr = MediaWikiServices::getInstance()->getDBLoadBalancer()->getConnection( DB_REPLICA );
-			$res = $dbr->select(
-				[ 'page', 'categorylinks' ],
-				[ 'page_title' ],
-				[ 'cl_to' => $category_match, 'page_namespace' => NS_FILE ],
-				__METHOD__,
-				$params,
-				[ 'categorylinks' => [ 'INNER JOIN', 'cl_from=page_id' ] ]
-			);
+			if ( version_compare( MW_VERSION, '1.45', '>=' ) ) {
+				// 1.45+
+				$res = $dbr->select(
+					[ 'page', 'categorylinks', 'linktarget' ],
+					[ 'page_title' ],
+					[ 'lt_namespace' => NS_CATEGORY, 'lt_title' => $category_match, 'page_namespace' => NS_FILE ],
+					__METHOD__,
+					$params,
+					[
+						'categorylinks' => [ 'INNER JOIN', 'cl_from=page_id' ],
+						'linktarget' => [ 'INNER JOIN', 'cl_target_id=lt_id' ]
+					]
+				);
+			} else {
+				// < 1.45
+				$res = $dbr->select(
+					[ 'page', 'categorylinks' ],
+					[ 'page_title' ],
+					[ 'cl_to' => $category_match, 'page_namespace' => NS_FILE ],
+					__METHOD__,
+					$params,
+					[ 'categorylinks' => [ 'INNER JOIN', 'cl_from=page_id' ] ]
+				);
+			}
 			$image_list = [];
 			foreach ( $res as $row ) {
 				$image_list[] = $row->page_title;
