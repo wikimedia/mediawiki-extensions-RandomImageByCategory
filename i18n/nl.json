@@ -1,8 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
-			"Mainframe98"
+			"Mainframe98",
+			"Siebrand"
 		]
 	},
-	"randomimagebycategory-desc": "Toont een willekeurige afbeelding uit een gegeven categorie"
+	"randomimagebycategory-desc": "Geeft een willekeurige afbeelding weer uit een gegeven categorie"
 }
